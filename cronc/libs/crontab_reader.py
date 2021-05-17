@@ -1,26 +1,10 @@
 import pathlib
 import re
-from pprint import pp
-from dataclasses import dataclass
-
-
-class _Status:
-    DISABLED: str = 'DISABLED'
-    ENABLED: str = 'ENABLED'
-
-
-@dataclass
-class Schedule:
-    status: _Status
-    calendar: str
-    user: str
-    command: str
+from cronc.libs.schedule import Schedule
 
 
 class CrontabReader:
     __ENCODING: str = 'utf-8'
-
-    Status: _Status = _Status
 
     def __init__(self, crontab_file: pathlib.Path) -> None:
         self.__crontab_file: pathlib.Path = crontab_file
@@ -39,16 +23,18 @@ class CrontabReader:
                                    len(match.group(3)):]
                 user: str = action.split()[0]
                 command: str = action[len(user) + 1:]
-
                 tasks += [
                     Schedule(
-                        self.Status.DISABLED \
+                        Schedule.STATUS.DISABLED \
                         if match.group(1) \
-                        else self.Status.ENABLED,
+                        else Schedule.STATUS.ENABLED,
                         match.group(3)[:-1],
                         user,
                         command
                     )
                 ]
 
-        pp(tasks)
+        return tasks
+
+    def write_task(self, schedule: Schedule) -> None:
+        ...
