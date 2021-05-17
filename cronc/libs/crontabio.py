@@ -35,12 +35,12 @@ class CrontabIO:
                 command: str = action[len(user) + 1:]
                 t_col += [
                     Task(
-                        Task.STATUS.DISABLED \
+                        state=Task.STATUS.DISABLED \
                         if match.group(1) \
                         else Task.STATUS.ENABLED,
-                        match.group(3)[:-1],
-                        user,
-                        command
+                        schedule=match.group(3)[:-1],
+                        user=user,
+                        command=command
                     )
                 ]
 

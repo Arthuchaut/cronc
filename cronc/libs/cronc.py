@@ -14,9 +14,18 @@ class Cronc:
 
     def get_task(self, tid: int) -> Task:
         filtered_tasks: list[Task] = list(
-            filter(lambda s: s.tid == tid, self.tasks)
+            filter(lambda t: t.tid == tid, self.tasks)
         )
         return filtered_tasks[0] if len(filtered_tasks) else None
+
+    def delete_task(self, tid: int) -> None:
+        filtered_tasks: list[Task] = list(
+            filter(lambda t: t.tid == tid, self.tasks)
+        )
+
+        if len(filtered_tasks):
+            task = filtered_tasks[0]
+            self.tasks.remove(task)
 
     def save(self) -> None:
         self.__crontabio.write_tasks(self.tasks)

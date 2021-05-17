@@ -1,7 +1,8 @@
 from __future__ import annotations
 from itertools import count
-from typing import Any, Callable, Iterable, Iterator, overload
+from typing import Any, Iterable, Iterator
 from tabulate import tabulate
+from pprint import pp
 
 
 class _Status:
@@ -14,7 +15,11 @@ class Task:
     _ids: Iterator = count(0)
 
     def __init__(
-        self, state: _Status, schedule: str, user: str, command: str
+        self,
+        schedule: str,
+        user: str,
+        command: str,
+        state: _Status = STATUS.ENABLED
     ) -> None:
         self.tid: int = next(self._ids)
         self.state: _Status = state
